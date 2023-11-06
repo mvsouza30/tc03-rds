@@ -1,11 +1,11 @@
 variable "access_key" {
   type = "string"
   description = "Chave de acesso"
-  default = "AKIA6LLYOT7WVRFWO6MR"
+  default = "AKIA6LLYOT7WRQURGZ5R"
 }
 
 variable "secret_key" {
   type = "string"
   description = "Senha de acesso"
-  default = "7ORxfRxajPR+8wtzBVcr02OpIa2SJYZneh5/WGp/"
+  default = "FDubf6+oF/yH8gWpqXh7apxhwGCAXy324LSicuMc"
 }
