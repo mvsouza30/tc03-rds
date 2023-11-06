@@ -25,5 +25,5 @@ variable "db_username" {
 variable "db_password" {
   description = "AWS secret key for database authentication."
   type        = string
-  default     = "C0n3ct@_S3cur1t1"
+  default     = "C0n3ct@/S3cur1ty"
 }
