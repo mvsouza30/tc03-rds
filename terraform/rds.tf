@@ -6,17 +6,17 @@ provider "aws" {
 }
 
 # Recurso de segurança do grupo de banco de dados para permitir o tráfego do ECS Fargate
-resource "aws_db_security_group" "mydb_security_group" {
-  name        = "mydb_security_group"
-  description = "Security group for my RDS instance"
+#resource "aws_db_security_group" "mydb_security_group" {
+  #name        = "mydb_security_group"
+  #description = "Security group for my RDS instance"
 
-  ingress {
-    from_port   = 3306
-    to_port     = 3306
-    protocol    = "tcp"
-    cidr_blocks = ["172.31.0.0/16"] # Permitir apenas o tráfego da rede do ECS Fargate
-  }
-}
+  #ingress {
+    #from_port   = 3306
+    #to_port     = 3306
+    #protocol    = "tcp"
+    #cidr_blocks = ["172.31.0.0/16"] # Permitir apenas o tráfego da rede do ECS Fargate
+  #}
+#}
 
 # Crie uma instância do Amazon RDS MySQL
 resource "aws_db_instance" "qtopinstance" {
@@ -59,9 +59,29 @@ resource "null_resource" "create_database_and_tables" {
   }
 }
 
+resource "aws_vpc" "mainvpc"{
+    cidr_block           = "172.31.0.0/16"
+    instance_tenancy     = "default"
+    enable_dns_hostnames = true
+}
+
+resource "aws_subnet" "sn1"{
+    cidr_block              = "172.31.1.0/24"
+    vpc_id                  = aws_vpc.mainvpc.id
+    availability_zone       = "us-east-1a"
+    map_public_ip_on_launch = true
+}
+
+resource "aws_subnet" "sn2"{
+    cidr_block              = "172.31.2.0/24"
+    vpc_id                  = aws_vpc.mainvpc.id
+    availability_zone       = "us-east-1b"
+    map_public_ip_on_launch = true
+}
+
 resource "aws_db_subnet_group" "mainsubnetgroup" {
   name       = "mainsubnetgroup"
-  subnet_ids = [aws_subnet.frontend.id, aws_subnet.backend.id]
+  subnet_ids = [aws_subnet.sn1.id, aws_subnet.sn2.id]
 
   tags = {
     Name = "my_DB_subnet_group"
@@ -81,8 +101,8 @@ resource "aws_db_proxy" "proxy" {
   idle_client_timeout    = 1800
   require_tls            = true
   role_arn               = "arn:aws:iam::${var.id}:role/${var.role}"
-  vpc_security_group_ids = [aws_security_group.mydb_security_group.id]
-  vpc_subnet_ids         = aws_subnet.mainsubnetgroup.vpc_subnet_ids
+  vpc_security_group_ids = [aws_vpc.mainvpc.cidr_block]
+  vpc_subnet_ids         = aws_subnet.sn1.vpc_id
 
   auth {
     auth_scheme = "SECRETS"
@@ -105,6 +125,6 @@ resource "aws_db_proxy" "proxy" {
 resource "aws_db_proxy_endpoint" "endpoint" {
   db_proxy_name          = aws_db_proxy.name
   db_proxy_endpoint_name = "conn_rds_ecs"
-  vpc_subnet_ids         = aws_subnet.aws_subnet.mainsubnetgroup.vpc_subnet_ids
+  vpc_subnet_ids         = aws_subnet.sn1.vpc_id, aws_subnet.sn2.vpc_id
   target_role            = "READ_ONLY"
 }
