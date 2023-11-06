@@ -33,14 +33,14 @@ resource "aws_security_group" "qtop_sg" {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr = "191.5.227.137/32"
   }
 
   egress {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr = "191.5.227.137/32"
   }
 
   tags = {
