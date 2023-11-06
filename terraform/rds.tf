@@ -125,6 +125,7 @@ resource "aws_db_proxy" "proxy" {
 resource "aws_db_proxy_endpoint" "endpoint" {
   db_proxy_name          = aws_db_proxy.name
   db_proxy_endpoint_name = "conn_rds_ecs"
-  vpc_subnet_ids         = aws_subnet.sn1.vpc_id, aws_subnet.sn2.vpc_id
+  vpc_subnet_ids         = aws_subnet.sn1.vpc_id 
+  vpc_subnet_ids         = aws_subnet.sn2.vpc_id
   target_role            = "READ_ONLY"
 }
