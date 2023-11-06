@@ -8,6 +8,12 @@ on:
     branches:
       - main
 
+permissions:
+  pull-requests: write
+  issues: write
+  repository-projects: write
+
+
 jobs:
   terraform:
     name: Plan / Apply
