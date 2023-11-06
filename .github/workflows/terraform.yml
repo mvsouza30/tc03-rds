@@ -9,6 +9,10 @@ jobs:
   terraform:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory:  $terraform_path
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -22,6 +26,9 @@ jobs:
 
       - name: Initialize Terraform
         run: terraform init
+
+      - name: Planning Terraform
+        run: terraform plan
 
       - name: Deploy Infrastructure
         run: terraform apply -auto-approve
