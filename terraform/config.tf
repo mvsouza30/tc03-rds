@@ -4,7 +4,7 @@ provider "aws"{
     secret_key = var.aws_secret_key
 }
 
-resource "aws_db_instance" "qtop-instance" {
+resource "aws_db_instance" "qtopinstance" {
   allocated_storage    = 5
   db_name              = "qtop-db"
   engine               = "mysql"
