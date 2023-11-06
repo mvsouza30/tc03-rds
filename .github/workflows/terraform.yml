@@ -1,0 +1,34 @@
+name: Terraform Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 0.15.5
+
+      - name: Initialize Terraform
+        run: terraform init
+
+      - name: Deploy Infrastructure
+        run: terraform apply -auto-approve
+
+      - name: Save Terraform State
+        run: terraform state pull > terraform.tfstate
+
+      - name: Upload Terraform State
+        uses: actions/upload-artifact@v2
+        with:
+          name: terraform-state
+          path: terraform.tfstate
