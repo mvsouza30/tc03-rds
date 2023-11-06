@@ -30,7 +30,7 @@ resource "aws_db_instance" "qtopinstance" {
   password             = var.db_password
   parameter_group_name = "default.mysql5.7"
   skip_final_snapshot  = true
-  vpc_security_group_ids = [aws_db_security_group.mydb_security_group.id]
+  #vpc_security_group_ids = [aws_db_security_group.mydb_security_group.id]
 }
 
 ########-configurar daqui para baixo#########
@@ -123,7 +123,7 @@ resource "aws_db_proxy" "proxy" {
 # que seus aplicativos usarão para acessar o banco de dados subjacente.
 
 resource "aws_db_proxy_endpoint" "endpoint" {
-  db_proxy_name          = aws_db_proxy.name
+  db_proxy_name          = aws_db_proxy.proxy.name
   db_proxy_endpoint_name = "conn_rds_ecs"
   vpc_subnet_ids         = aws_subnet.sn2.vpc_id
   target_role            = "READ_ONLY"
