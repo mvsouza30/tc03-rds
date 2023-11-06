@@ -33,14 +33,14 @@ resource "aws_security_group" "qtop_sg" {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = [var.my_ip_address]
+    cidr_blocks = [0.0.0.0/0]
   }
 
   egress {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = [var.my_ip_address]
+    cidr_blocks = [0.0.0.0/0]
   }
 
   tags = {
@@ -48,8 +48,8 @@ resource "aws_security_group" "qtop_sg" {
   }
 }
 
-resource "aws_db_parameter_group" "qtop_pg" {
-  name   = "qtop_pg"
+resource "aws_db_parameter_group" "qtop-pg" {
+  name   = "qtop-pg"
   family = "mysql5.7"
 
   parameter {
@@ -71,29 +71,4 @@ resource "aws_db_instance" "qtop_instance" {
   parameter_group_name   = aws_db_parameter_group.qtop_pg.name
   publicly_accessible    = false
   skip_final_snapshot    = true
-}
-
-resource "aws_db_table" "cardapio" {
-  name           = "cardapio"
-  db_instance    = aws_db_instance.qtop_instance.id
-  column {
-  name = "item"
-  type = "VARCHAR(255)"
-}
-
-column {
-  name = "preco"
-  type = "DECIMAL"
-}
-
-column {
-  name = "descricao"
-  type = "VARCHAR(255)"
-}
-
-column {
-  name = "arquivo"
-  type = "VARCHAR(255)"
-}
-
 }
