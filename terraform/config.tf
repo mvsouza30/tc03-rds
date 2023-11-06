@@ -6,7 +6,7 @@ provider "aws"{
 
 resource "aws_db_instance" "qtopinstance" {
   allocated_storage    = 5
-  db_name              = "qtop-db"
+  db_name              = "qtopinstance"
   engine               = "mysql"
   engine_version       = "5.7"
   instance_class       = "db.t3.micro"
