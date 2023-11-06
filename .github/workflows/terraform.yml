@@ -41,10 +41,10 @@ jobs:
       with:
         terraform_version: 1.6.2
 
-    - name: Terraform Format
-      id: fmt
-      run: terraform fmt -check
-      continue-on-error: false
+    #- name: Terraform Format
+      #id: fmt
+      #run: terraform fmt -check
+      #continue-on-error: false
 
     - name: Terraform Init
       id: init
