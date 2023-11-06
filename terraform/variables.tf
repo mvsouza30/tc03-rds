@@ -9,9 +9,3 @@ variable "secret_key" {
   description = "Senha de acesso"
   default = "7ORxfRxajPR+8wtzBVcr02OpIa2SJYZneh5/WGp/"
 }
-
-variable "region" {
-  type = "string"
-  description = "Região padrão de provisionamento"
-  default = "us-east-1"
-}
