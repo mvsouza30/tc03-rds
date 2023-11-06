@@ -34,7 +34,7 @@ jobs:
       with:
         aws-access-key-id: var.access_key
         aws-secret-access-key: var.secret_key
-        aws-region: var.region
+        aws-region: "us-east-1"
 
     - name: Use Terraform 1.3.7
       uses: hashicorp/setup-terraform@v2
