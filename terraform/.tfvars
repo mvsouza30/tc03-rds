@@ -1,5 +1,0 @@
-db_username     = "mvsouza"
-db_password     = "C0n3ct@"
-my_ip_address   = "191.5.227.137"
-region          = "us-east-1"
-terraform_path  = "terraform"
