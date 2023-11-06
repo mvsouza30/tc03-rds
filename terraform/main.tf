@@ -1,7 +1,3 @@
-provider "aws" {
-  region = "us-east-1"
-}
-
 resource "aws_db_instance" "qtop-instance" {
   allocated_storage    = 5
   db_name              = "qtop-db"
