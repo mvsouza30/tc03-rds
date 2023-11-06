@@ -8,14 +8,11 @@ on:
     branches:
       - main
 
-env:
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
 jobs:
   terraform:
     name: Plan / Apply
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
+    environment: prod
     defaults:
       run:
         working-directory: terraform
