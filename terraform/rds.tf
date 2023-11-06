@@ -25,7 +25,7 @@ resource "aws_db_instance" "qtopinstance" {
   engine               = "mysql"
   engine_version       = "5.7"
   instance_class       = "db.t2.micro"
-  name                 = "qtopinstance"
+  #name                 = "qtopinstance"
   username             = var.db_username
   password             = var.db_password
   parameter_group_name = "default.mysql5.7"
@@ -124,7 +124,7 @@ resource "aws_db_proxy" "proxy" {
 
 resource "aws_db_proxy_endpoint" "endpoint" {
   db_proxy_name          = aws_db_proxy.proxy.name
-  db_proxy_endpoint_name = "conn_rds_ecs"
+  db_proxy_endpoint_name = conn-rds-ecs
   vpc_subnet_ids         = aws_subnet.sn2.vpc_id
   target_role            = "READ_ONLY"
 }
