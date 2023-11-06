@@ -27,3 +27,15 @@ variable "db_password" {
   type        = string
   default     = "MarcosTeste"
 }
+
+variable "id" {
+  description = "AWS arn da role para DB proxy."
+  type        = string
+  default     = "986484482029"
+}
+
+variable "role" {
+  description = "Permissionamento do DB proxy."
+  type        = string
+  default     = "role_to_get_access"
+}
