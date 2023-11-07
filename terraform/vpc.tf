@@ -25,6 +25,14 @@ resource "aws_security_group" "rds_sg" {
     protocol    = "tcp"
     cidr_blocks = [aws_vpc.my_vpc.cidr_block]
   }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [aws_vpc.my_vpc.cidr_block]
+  }
+
   egress {
     from_port        = 0
     to_port          = 0
