@@ -19,11 +19,11 @@ variable "aws_secret_key" {
 variable "db_username" {
   description = "AWS access key for database authentication."
   type        = string
-  default     = "root"
+  default     = "rdsadmin"
 }
 
 variable "db_password" {
   description = "AWS secret key for database authentication."
   type        = string
-  default     = "MarcosTeste"
+  default     = "Administrator"
 }
