@@ -1,15 +1,24 @@
-resource "aws_vpc" "my_vpc" {
-  cidr_block = "10.0.0.0/16"
+resource "aws_vpc_security_group_ingress_rule" "vpc_ingress" {
+  security_group_id = aws_security_group.rds_sg.id
+
+  cidr_ipv4   = "10.0.0.0/16"
+  from_port   = 80
+  ip_protocol = "tcp"
+  to_port     = 80
 }
 
+#resource "aws_vpc" "my_vpc" {
+  #cidr_block = "10.0.0.0/16"
+#}
+
 resource "aws_subnet" "subnet_a" {
-  vpc_id     = aws_vpc.my_vpc.id
+  vpc_id     = aws_vpc_security_group_ingress_rule.vpc_ingress.id
   cidr_block = "10.0.1.0/24"
   availability_zone = "us-east-1a"
 }
 
 resource "aws_subnet" "subnet_b" {
-  vpc_id     = aws_vpc.my_vpc.id
+  vpc_id     = aws_vpc_security_group_ingress_rule.vpc_ingress.id
   cidr_block = "10.0.2.0/24"
   availability_zone = "us-east-1b"
 }
