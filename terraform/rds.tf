@@ -18,23 +18,7 @@ resource "aws_db_instance" "default" {
 # Crie um banco de dados e tabelas na instância RDS MySQL
 resource "null_resource" "create_database_and_tables" {
   depends_on = [aws_db_instance.default]
-  provisioner "remote-exec" {
-    command = <<EOT
-    mysql -h ${aws_db_instance.default.address} -u ${aws_db_instance.default.username} -p${aws_db_instance.default.password} <<MYSQL_SCRIPT
-    CREATE DATABASE qtopdb;
-    USE qtopdb;
-    CREATE TABLE cardapio (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      item VARCHAR(255),
-      preco DECIMAL (10, 2) NOT NULL,
-      descricao VARCHAR(255) NOT NULL,
-      arquivo VARCHAR(25) NOT NULL
-    );
-    MYSQL_SCRIPT
-    EOT
-  }
-
-  triggers = {
-    db_instance_id = aws_db_instance.default.id
-  }
-}
+  provisioner "local-exec" {
+    command = "mysql -h ${aws_db_instance.default.address} -u ${aws_db_instance.default.username} -p${aws_db_instance.default.password} < script.sql"
+     }
+    }
