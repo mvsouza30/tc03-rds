@@ -1,24 +1,15 @@
-resource "aws_vpc_security_group_ingress_rule" "vpc_ingress" {
-  security_group_id = aws_security_group.rds_sg.id
-
-  cidr_ipv4   = "10.0.0.0/16"
-  from_port   = 80
-  ip_protocol = "tcp"
-  to_port     = 80
+resource "aws_vpc" "my_vpc" {
+  cidr_block = "10.0.0.0/16"
 }
 
-#resource "aws_vpc" "my_vpc" {
-  #cidr_block = "10.0.0.0/16"
-#}
-
 resource "aws_subnet" "subnet_a" {
-  vpc_id     = aws_vpc_security_group_ingress_rule.vpc_ingress.id
+  vpc_id     = aws_vpc.my_vpc.id
   cidr_block = "10.0.1.0/24"
   availability_zone = "us-east-1a"
 }
 
 resource "aws_subnet" "subnet_b" {
-  vpc_id     = aws_vpc_security_group_ingress_rule.vpc_ingress.id
+  vpc_id     = aws_vpc.my_vpc.id
   cidr_block = "10.0.2.0/24"
   availability_zone = "us-east-1b"
 }
@@ -26,13 +17,13 @@ resource "aws_subnet" "subnet_b" {
 resource "aws_security_group" "rds_sg" {
   name_prefix = "rds-"
   description = "Allow TLS inbound traffic"  
-  vpc_id = aws_vpc_security_group_ingress_rule.vpc_ingress.id
+  vpc_id = aws_vpc.my_vpc.id
 
   ingress {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = [aws_vpc_security_group_ingress_rule.vpc_ingress.cidr_block]
+    cidr_blocks = [aws_vpc.my_vpc.cidr_block]
   }
 
   egress {
@@ -44,6 +35,7 @@ resource "aws_security_group" "rds_sg" {
 
 }
 
+
 resource "aws_db_subnet_group" "my_db_subnet_group" {
   name       = "my-db-subnet-group"
   subnet_ids = [aws_subnet.subnet_a.id, aws_subnet.subnet_b.id]
@@ -51,4 +43,13 @@ resource "aws_db_subnet_group" "my_db_subnet_group" {
   tags = {
     Name = "My DB Subnet Group"
   }
+}
+
+resource "aws_vpc_security_group_ingress_rule" "vpc_ingress" {
+  security_group_id = aws_security_group.rds_sg.id
+
+  cidr_ipv4   = "10.0.0.0/16"
+  from_port   = 80
+  ip_protocol = "tcp"
+  to_port     = 80
 }
