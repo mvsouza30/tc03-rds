@@ -12,12 +12,14 @@ resource "aws_db_instance" "default" {
 
   vpc_security_group_ids = [aws_security_group.rds_sg.id]
   db_subnet_group_name   = aws_db_subnet_group.my_db_subnet_group.name
+
+  skip_final_snapshot = true
 }
 
 # Crie um banco de dados e tabelas na instância RDS MySQL
 resource "null_resource" "create_database_and_tables" {
   depends_on = [aws_db_instance.default]
-  provisioner "local-exec" {
+  provisioner "remote-exec" {
     command = <<EOT
     mysql -h ${aws_db_instance.default.address} -u ${aws_db_instance.default.username} -p${aws_db_instance.default.password} <<MYSQL_SCRIPT
     CREATE DATABASE qtopdb;
