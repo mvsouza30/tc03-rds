@@ -72,9 +72,11 @@ jobs:
 
     - name: Run SQL Script
       run: |
-        mysql -h ${{ secrets.RDS_HOSTNAME }} -u ${{ secrets.DB_USERNAME }} -p${{ secrets.DB_PASSWORD }} < script.sql
+        mysql -h ${{ secrets.RDS_HOSTNAME }} -u ${{ secrets.DB_USERNAME }} -p${{ secrets.DB_PASSWORD }} -D ${{ secrets.DB_NAME }} < script.sql
       env:
+        RDS_HOSTNAME: ${{ secrets.RDS_HOSTNAME }}
         DB_USERNAME: ${{ secrets.DB_USERNAME }}
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        DB_NAME: ${{ secrets.DB_NAME }}
     
 
