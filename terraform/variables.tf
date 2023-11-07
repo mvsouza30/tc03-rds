@@ -39,3 +39,9 @@ variable "role" {
   type        = string
   default     = "role_to_get_access"
 }
+
+variable "address" {
+  description = "hostname da instância de banco de dados."
+  type        = string
+  default     = "qtophost"
+}
