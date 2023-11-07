@@ -16,6 +16,23 @@ resource "aws_subnet" "subnet_b" {
 
 resource "aws_security_group" "rds_sg" {
   name_prefix = "rds-"
+  description = "Allow TLS inbound traffic"
+
+  ingress {
+    description      = "TLS from VPC"
+    from_port        = 3306
+    to_port          = 3306
+    protocol         = "tcp"
+    cidr_blocks      = [aws_vpc.my_vpc.cidr_block]
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }   
+
 
   vpc_id = aws_vpc.my_vpc.id
 
