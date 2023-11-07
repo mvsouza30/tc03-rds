@@ -1,46 +1,24 @@
-# Define provider for AWS
-provider "aws" {
-    region     = var.aws_region
-    access_key = var.aws_access_key
-    secret_key = var.aws_secret_key
-}
-
-# Recurso de segurança do grupo de banco de dados para permitir o tráfego do ECS Fargate
-#resource "aws_db_security_group" "mydb_security_group" {
-  #name        = "mydb_security_group"
-  #description = "Security group for my RDS instance"
-
-  #ingress {
-    #from_port   = 3306
-    #to_port     = 3306
-    #protocol    = "tcp"
-    #cidr_blocks = ["172.31.0.0/16"] # Permitir apenas o tráfego da rede do ECS Fargate
-  #}
-#}
-
 # Crie uma instância do Amazon RDS MySQL
-resource "aws_db_instance" "qtopinstance" {
-  allocated_storage    = 5
+resource "aws_db_instance" "default" {
+  allocated_storage    = 10
   db_name              = "qtopdb"
   engine               = "mysql"
   engine_version       = "5.7"
   instance_class       = "db.t2.micro"
-  #name                 = "qtopinstance"
   username             = var.db_username
   password             = var.db_password
   parameter_group_name = "default.mysql5.7"
   skip_final_snapshot  = true
-  #vpc_security_group_ids = [aws_db_security_group.mydb_security_group.id]
+
+  vpc_security_group_ids = [aws_security_group.rds_sg.id]
+  db_subnet_group_name   = aws_db_subnet_group.my_db_subnet_group.name
 }
-
-########-configurar daqui para baixo#########
-
 
 # Crie um banco de dados e tabelas na instância RDS MySQL
 resource "null_resource" "create_database_and_tables" {
   provisioner "local-exec" {
     command = <<EOT
-    mysql -h ${aws_db_instance.qtopinstance.endpoint} -u ${aws_db_instance.qtopinstance.username} -p${aws_db_instance.qtopinstance.password} <<MYSQL_SCRIPT
+    mysql -h ${aws_db_instance.default.endpoint} -u ${aws_db_instance.default.username} -p${aws_db_instance.default.password} <<MYSQL_SCRIPT
     CREATE DATABASE qtopdb;
     USE qtopdb;
     CREATE TABLE cardapio (
@@ -55,76 +33,6 @@ resource "null_resource" "create_database_and_tables" {
   }
 
   triggers = {
-    db_instance_id = aws_db_instance.qtopinstance.id
+    db_instance_id = aws_db_instance.default.id
   }
-}
-
-resource "aws_vpc" "mainvpc"{
-    cidr_block           = "172.31.0.0/16"
-    instance_tenancy     = "default"
-    enable_dns_hostnames = true
-}
-
-resource "aws_subnet" "sn1"{
-    cidr_block              = "172.31.1.0/24"
-    vpc_id                  = aws_vpc.mainvpc.id
-    availability_zone       = "us-east-1a"
-    map_public_ip_on_launch = true
-}
-
-resource "aws_subnet" "sn2"{
-    cidr_block              = "172.31.2.0/24"
-    vpc_id                  = aws_vpc.mainvpc.id
-    availability_zone       = "us-east-1b"
-    map_public_ip_on_launch = true
-}
-
-resource "aws_db_subnet_group" "mainsubnetgroup" {
-  name       = "mainsubnetgroup"
-  subnet_ids = [aws_subnet.sn1.id, aws_subnet.sn2.id]
-
-  tags = {
-    Name = "my_DB_subnet_group"
-  }
-}
-
-# O Amazon RDS Proxy é um serviço gerenciado que permite melhorar a escalabilidade, a disponibilidade e a segurança
-# das conexões de banco de dados com instâncias de banco de dados RDS (Relational Database Service) e Aurora. 
-# O proxy de banco de dados age como um intermediário entre seu aplicativo e o banco de dados, gerenciando 
-# conexões de forma eficiente e proporcionando recursos como pooling de conexões, balanceamento de carga
-# e failover automático.
-
-resource "aws_db_proxy" "proxy" {
-  name                   = "proxy"
-  debug_logging          = false
-  engine_family          = "MYSQL"
-  idle_client_timeout    = 1800
-  require_tls            = true
-  role_arn               = "arn:aws:iam::${var.id}:role/${var.role}"
-  vpc_security_group_ids = [aws_vpc.mainvpc.cidr_block]
-  vpc_subnet_ids         = aws_subnet.sn1.vpc_id
-
-  auth {
-    auth_scheme = "SECRETS"
-    description = "example"
-    iam_auth    = "DISABLED"
-    #secret_arn  = aws_secretsmanager_secret.example.arn
-  }
-
-  tags = {
-    Name = "rdsdb"
-    Key  = "ecsfar"
-  }
-}
-
-# O endpoint do proxy de banco de dados é o endereço de rede que os aplicativos usam para se conectar ao proxy, que, 
-# por sua vez, redireciona as conexões para as instâncias de banco de dados RDS ou Aurora subjacentes. 
-# Este recurso é útil para configurar e gerenciar os pontos de extremidade do proxy de banco de dados 
-# que seus aplicativos usarão para acessar o banco de dados subjacente.
-
-resource "aws_db_proxy_endpoint" "endpoint" {
-  db_proxy_name          = aws_db_proxy.proxy.name
-  db_proxy_endpoint_name = aws_db_proxy.name
-  vpc_subnet_ids         = aws_subnet.sn2.vpc_id
-  target_role            = "READ_ONLY"
 }
