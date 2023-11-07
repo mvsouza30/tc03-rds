@@ -15,6 +15,29 @@ resource "aws_db_instance" "default" {
 
 }
 
+resource "aws_db_proxy" "dbproxy" {
+  name                   = "dbproxy"
+  debug_logging          = false
+  engine_family          = "MYSQL"
+  idle_client_timeout    = 1800
+  require_tls            = true
+  role_arn               = arn:aws:iam::986484482029:role/role_to_get_access
+  vpc_security_group_ids = [aws_security_group.rds_sg.id]
+  vpc_subnet_ids         = [aws_subnet.subnet_a.id, aws_subnet.subnet_b.id]
+
+  auth {
+    client_password_auth_type = "MYSQL_NATIVE_PASSWORD"
+    description = "Utilizando a senha do MySQL para autenticar no proxy"
+    iam_auth    = "REQUIRED"
+    #secret_arn  = aws_secretsmanager_secret.example.arn
+  }
+
+  tags = {
+    Name = "example"
+    Key  = "value"
+  }
+}
+
 # Crie um banco de dados e tabelas na instância RDS MySQL
 resource "null_resource" "create_database_and_tables" {
   depends_on = [aws_db_instance.default]
