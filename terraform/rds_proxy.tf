@@ -13,7 +13,7 @@ resource "aws_db_proxy" "dbproxy" {
     auth_scheme = "SECRETS"
     description = "Proxy para autenticação no banco de dados"
     iam_auth    = "REQUIRED"
-    secret_arn  = aws_secretsmanager_secret.rdssm.arn
+    secret_arn  = aws_secretsmanager_secret.rds_secrets.arn
   }
 
   tags = {
