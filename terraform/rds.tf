@@ -14,6 +14,8 @@ resource "aws_db_instance" "default" {
 
   vpc_security_group_ids = [aws_security_group.rds_sg.id]
   db_subnet_group_name   = aws_db_subnet_group.my_db_subnet_group.name
+
+  depends_on = [aws_internet_gateway.gw]
 }
 
 output "rds_hostname" {
