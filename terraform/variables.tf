@@ -27,3 +27,15 @@ variable "db_password" {
   type        = string
   default     = "MarcosTeste"
 }
+
+variable "id" {
+  description = "Account ID."
+  type        = string
+  default     = "986484482029"
+}
+
+variable "role" {
+  description = "user role."
+  type        = string
+  default     = "role_to_get_access"
+}
