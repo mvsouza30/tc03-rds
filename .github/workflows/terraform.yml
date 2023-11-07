@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   terraform:
-    name: Plan / Apply / MySQL Script
+    name: Plan / Apply / SQL Script
     runs-on: ubuntu-latest
     environment: prod
     defaults:
