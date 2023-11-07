@@ -19,7 +19,7 @@ resource "null_resource" "create_database_and_tables" {
   depends_on = [aws_db_instance.default]
   provisioner "local-exec" {
     command = <<EOT
-    mysql -h ${aws_db_instance.default.db_name} -u ${aws_db_instance.default.username} -p${aws_db_instance.default.password} <<MYSQL_SCRIPT
+    mysql -h ${aws_db_instance.default.id} -u ${aws_db_instance.default.username} -p ${aws_db_instance.default.password} <<MYSQL_SCRIPT
     CREATE DATABASE qtopdb;
     USE qtopdb;
     CREATE TABLE cardapio (
