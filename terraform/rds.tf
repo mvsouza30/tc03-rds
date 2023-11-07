@@ -16,7 +16,7 @@ resource "aws_db_instance" "default" {
 
 # Crie um banco de dados e tabelas na instância RDS MySQL
 resource "null_resource" "create_database_and_tables" {
-  depends_on = ["aws_db_instance.default"]
+  depends_on = [aws_db_instance.default]
   provisioner "local-exec" {
     command = <<EOT
     mysql -h ${aws_db_instance.default.endpoint} -u ${aws_db_instance.default.username} -p${aws_db_instance.default.password} <<MYSQL_SCRIPT
