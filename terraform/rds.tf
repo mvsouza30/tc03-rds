@@ -9,16 +9,21 @@ resource "aws_db_instance" "default" {
   password             = var.db_password
   parameter_group_name = "default.mysql5.7"
   skip_final_snapshot  = true
+  publicly_accessible  = true
+  multi_az             = false
 
   vpc_security_group_ids = [aws_security_group.rds_sg.id]
   db_subnet_group_name   = aws_db_subnet_group.my_db_subnet_group.name
+}
 
+output "rds_hostname" {
+  value = aws_db_instance.default.endpoint
 }
 
 # Crie um banco de dados e tabelas na instância RDS MySQL
-resource "null_resource" "create_database_and_tables" {
-  depends_on = [aws_db_instance.default]
-  provisioner "local-exec" {
-    command = "mysql -h ${aws_db_instance.default.address} -u ${aws_db_instance.default.username} -p${aws_db_instance.default.password} < script.sql"
-     }
-    }
+#resource "null_resource" "create_database_and_tables" {
+  #depends_on = [aws_db_instance.default]
+  #provisioner "local-exec" {
+    #command = "mysql -h ${aws_db_instance.default.address} -u ${aws_db_instance.default.username} -p${aws_db_instance.default.password} < script.sql"
+     #}
+    #}

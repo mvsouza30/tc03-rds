@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   terraform:
-    name: Plan / Apply
+    name: Plan / Apply / MySQL Script
     runs-on: ubuntu-latest
     environment: prod
     defaults:
@@ -32,8 +32,8 @@ jobs:
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        aws-access-key-id: "AKIA6LLYOT7WRQURGZ5R"
-        aws-secret-access-key: "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"
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: "us-east-1"
 
     - name: Use Terraform 1.6.2
@@ -59,3 +59,22 @@ jobs:
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
+
+    - name: Capture RDS Hostname
+      run: |
+        RDS_HOSTNAME=$(terraform output rds_hostname)
+        echo "::set-secret name=RDS_HOSTNAME::${RDS_HOSTNAME}"
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: us-east-1
+      
+
+    - name: Run SQL Script
+      run: |
+        mysql -h ${{ secrets.RDS_HOSTNAME }} -u ${{ secrets.DB_USERNAME }} -p${{ secrets.DB_PASSWORD }} < script.sql
+      env:
+        DB_USERNAME: ${{ secrets.DB_USERNAME }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+    
+
