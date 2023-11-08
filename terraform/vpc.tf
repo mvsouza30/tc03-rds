@@ -4,13 +4,13 @@ resource "aws_vpc" "my_vpc" {
   enable_dns_hostnames  = true
 }
 
-resource "aws_subnet" "subnet_a" {
+resource "aws_subnet" "private_subnet_a" {
   vpc_id     = aws_vpc.my_vpc.id
   cidr_block = "10.0.1.0/24"
   availability_zone = "us-east-1a"
 }
 
-resource "aws_subnet" "subnet_b" {
+resource "aws_subnet" "private_subnet_b" {
   vpc_id     = aws_vpc.my_vpc.id
   cidr_block = "10.0.2.0/24"
   availability_zone = "us-east-1b"
@@ -40,7 +40,7 @@ resource "aws_security_group" "rds_sg" {
 
 resource "aws_db_subnet_group" "my_db_subnet_group" {
   name       = "my-db-subnet-group"
-  subnet_ids = [aws_subnet.subnet_a.id, aws_subnet.subnet_b.id]
+  subnet_ids = [aws_subnet.private_subnet_a.id, aws_subnet.private_subnet_b.id]
 
   tags = {
     Name = "My DB Subnet Group"
