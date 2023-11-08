@@ -7,13 +7,13 @@ variable "aws_region" {
 variable "aws_access_key" {
   description = "AWS access key for authentication."
   type        = string
-  default     = "AKIA6LLYOT7WRQURGZ5R"
+  default     = ""
 }
 
 variable "aws_secret_key" {
   description = "AWS secret key for authentication."
   type        = string
-  default     = "FDubf6+oF/yH8gWpqXh7apxhwGCAXy324LSicuMc"
+  default     = ""
 }
 
 variable "db_username" {
@@ -25,7 +25,7 @@ variable "db_username" {
 variable "db_password" {
   description = "AWS secret key for database authentication."
   type        = string
-  default     = "MarcosTeste"
+  default     = ""
 }
 
 variable "id" {
