@@ -1,5 +1,5 @@
 # Crie uma instância do Amazon RDS MySQL
-resource "aws_db_instance" "default" {
+resource "aws_db_instance" "rds-sn-gp" {
   allocated_storage     = 10
   db_name               = "qtopdb"
   engine                = "mysql"
