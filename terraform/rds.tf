@@ -11,7 +11,7 @@ resource "aws_db_instance" "default" {
   skip_final_snapshot   = true
   publicly_accessible   = false
   multi_az              = false
-  vpc_security_group_ids = aws_security_group.rds-sg
+  vpc_security_group_ids = aws_security_group.rds-sg.id
 }
 
 resource "aws_vpc" "rds-vpc" {
@@ -41,7 +41,7 @@ resource "aws_subnet" "subnet_az2" {
 
 resource "aws_db_subnet_group" "rds-sn-gp" {
   name       = "rds-sn-gp"
-  subnet_ids = [aws_subnet.subnet_az1, aws_subnet.subnet_az2]
+  subnet_ids = [aws_subnet.subnet_az1.id, aws_subnet.subnet_az2.id]
 }
 
 resource "aws_security_group" "rds-sg" {
