@@ -11,10 +11,9 @@ resource "aws_db_instance" "default" {
   skip_final_snapshot   = true
   publicly_accessible   = true
   multi_az              = false
-  vpc_security_group_ids = var.sg_id
+  vpc_security_group_id = var.sg_id
 
-  db_subnet_group_name   = var.subnet_group_name
-  subnet_ids             = var.subnet_ids
+  subnet_group_name     = var.subnet_group_name
 
   depends_on = [aws_internet_gateway.igw]
 }
