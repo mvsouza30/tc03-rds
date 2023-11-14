@@ -9,21 +9,57 @@ resource "aws_db_instance" "default" {
   password              = var.db_password
   parameter_group_name  = "default.mysql5.7"
   skip_final_snapshot   = true
-  publicly_accessible   = true
+  publicly_accessible   = false
   multi_az              = false
-  vpc_security_group_ids = sg-06b061000fe76fbc4
+  vpc_security_group_ids = aws_default_security_group.id
   depends_on = [aws_internet_gateway.igw]
 }
 
-resource "aws_db_subnet_group" "default" {
-  name        = "rds-sn-gp"
-  vpc_id      = var.vpc_id
-  subnet_ids  = var.subnet_ids
+resource "aws_vpc" "rds-vpc" {
+  cidr_block = "172.31.0.0/16"
+}
+
+resource "aws_default_subnet" "default_az1" {
+  vpc_id            = var.vpc_id
+  availability_zone = var.availability_zone_01
 
   tags = {
-    subnet-name = "rds-subnet"
+    subnet_name = "rds-sn-gp"
   }
 }
+
+resource "aws_default_subnet" "default_az2" {
+  vpc_id            = var.vpc_id
+  availability_zone = var.availability_zone_02
+
+  tags = {
+    subnet_name = "rds-sn-gp"
+  }
+}
+
+resource "aws_db_subnet_group" "rds-sn-gp" {
+  name       = "rds-sn-gp"
+  subnet_ids = [aws_default_subnet.default_az1, aws_default_subnet.default_az2]
+}
+
+resource "aws_default_security_group" "rds-sg" {
+  vpc_id = aws_vpc.rds-vpc.id
+
+  ingress {
+    protocol  = tcp
+    self      = true
+    from_port = 3306
+    to_port   = 3306
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 
 output "rds_hostname" {
   value = aws_db_instance.default.endpoint
