@@ -12,6 +12,7 @@ resource "aws_db_instance" "rds-instance" {
   publicly_accessible   = false
   multi_az              = false
   vpc_security_group_ids = [aws_security_group.rds-sg.id]
+  aws_db_subnet_group = aws_db_subnet_group.rds-sbnt-grp.name
 }
 
 resource "aws_vpc" "default" {
@@ -43,6 +44,8 @@ resource "aws_db_subnet_group" "rds-sbnt-grp" {
   name       = "rds-sn-gp"
   subnet_ids = [aws_subnet.subnet_az1.id, aws_subnet.subnet_az2.id]
 }
+
+
 
 resource "aws_security_group" "rds-sg" {
   name        = "rds-sg"
