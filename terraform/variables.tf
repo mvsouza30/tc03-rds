@@ -23,13 +23,13 @@ variable "db_password" {
 variable "availability_zone_01" {
   description = "Primeira zona de disponibilidade do RDS"
   type        = string
-  default     = "us-east-1a"
+  default     = "us-east-1b"
 }
 
 variable "availability_zone_02" {
   description = "Segunda zona de disponibilidade do RDS"
   type        = string
-  default     = "us-east-1b"
+  default     = "us-east-1c"
 }
 
 variable "subnet_group_name"{
