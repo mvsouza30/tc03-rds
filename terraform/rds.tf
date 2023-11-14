@@ -15,27 +15,27 @@ resource "aws_db_instance" "rds-instance" {
 }
 
 resource "aws_vpc" "default" {
-  cidr_block = "172.31.0.0/16"
+  cidr_block = "172.31.4.0/24"
 }
 
 resource "aws_subnet" "subnet_az1" {
   vpc_id            = aws_vpc.default.id
-  cidr_block        = "172.31.1.0/24"
+  cidr_block        = "172.31.5.0/32"
   availability_zone = var.availability_zone_01
   map_public_ip_on_launch = false
 
   tags = {
-    Name = "rds-sn-gp-az1"
+    subnet_name = "rds-sn-gp-az1"
   }
 }
 
 resource "aws_subnet" "subnet_az2" {
   vpc_id            = aws_vpc.default.id
-  cidr_block        = "172.31.2.0/24"  # Substitua com a sua CIDR única
+  cidr_block        = "172.31.6.0/32" 
   availability_zone = var.availability_zone_02
   map_public_ip_on_launch = false
   tags = {
-    Name = "rds-sn-gp-az2"
+    subnet_name = "rds-sn-gp-az2"
   }
 }
 
