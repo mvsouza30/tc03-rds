@@ -34,7 +34,7 @@ variable "availability_zone_02" {
 
 variable "subnet_group_name"{
   type    = string
-  default = "rds-sbnt-grp"
+  default = "rds-sn-gp"
 }
 
 variable "role" {

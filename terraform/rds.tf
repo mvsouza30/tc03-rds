@@ -14,13 +14,13 @@ resource "aws_db_instance" "rds-instance" {
   vpc_security_group_ids = [aws_security_group.rds-sg.id]
 }
 
-resource "aws_vpc" "default" {
-  cidr_block = "172.31.4.0/24"
+resource "aws_vpc" "ctm-vpc" {
+  cidr_block = "172.31.0.0/16"
 }
 
 resource "aws_subnet" "subnet_az1" {
-  vpc_id            = aws_vpc.default.id
-  cidr_block        = "172.31.5.0/32"
+  vpc_id            = aws_vpc.ctm-vpc.id
+  cidr_block        = "172.31.1.0/24"
   availability_zone = var.availability_zone_01
   map_public_ip_on_launch = false
 
@@ -30,8 +30,8 @@ resource "aws_subnet" "subnet_az1" {
 }
 
 resource "aws_subnet" "subnet_az2" {
-  vpc_id            = aws_vpc.default.id
-  cidr_block        = "172.31.6.0/32" 
+  vpc_id            = aws_vpc.ctm-vpc.id
+  cidr_block        = "172.31.2.0/24" 
   availability_zone = var.availability_zone_02
   map_public_ip_on_launch = false
   tags = {
@@ -47,7 +47,7 @@ resource "aws_db_subnet_group" "rds-sbnt-grp" {
 resource "aws_security_group" "rds-sg" {
   name        = "rds-sg"
   description = "Descricao do grupo de seguranca para RDS"
-  vpc_id      = aws_vpc.default.id
+  vpc_id      = aws_vpc.ctm-vpc.id
 
   ingress {
     protocol  = "tcp"
