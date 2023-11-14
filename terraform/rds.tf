@@ -19,7 +19,7 @@ resource "aws_vpc" "default" {
 }
 
 resource "aws_subnet" "subnet_az1" {
-  vpc_id            = aws_vpc.rds-vpc.id
+  vpc_id            = aws_vpc.default.id
   cidr_block        = "172.31.1.0/24"
   availability_zone = var.availability_zone_01
   map_public_ip_on_launch = false
@@ -30,7 +30,7 @@ resource "aws_subnet" "subnet_az1" {
 }
 
 resource "aws_subnet" "subnet_az2" {
-  vpc_id            = aws_vpc.rds-vpc.id
+  vpc_id            = aws_vpc.default.id
   cidr_block        = "172.31.2.0/24"  # Substitua com a sua CIDR única
   availability_zone = var.availability_zone_02
   map_public_ip_on_launch = false
@@ -47,7 +47,7 @@ resource "aws_db_subnet_group" "rds-sn-gp" {
 resource "aws_security_group" "rds-sg" {
   name        = "rds-sg"
   description = "Descricao do grupo de seguranca para RDS"
-  vpc_id      = aws_vpc.rds-vpc.id
+  vpc_id      = aws_vpc.default.id
 
   ingress {
     protocol  = "tcp"
