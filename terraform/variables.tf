@@ -17,7 +17,7 @@ variable "db_username" {
 variable "db_password" {
   description = "Auth do banco de dados."
   type        = string
-  default     = "C0n3ct@DB"
+  default     = "MarcosTeste"
 }
 
 variable "availability_zone_01" {
