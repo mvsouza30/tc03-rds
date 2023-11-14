@@ -32,11 +32,6 @@ variable "availability_zone_02" {
   default     = "us-east-1b"
 }
 
-#variable "sg_ids"{
-  #type    = list(string)
-  #default = "sg-06b061000fe76fbc4"
-#}
-
 variable "subnet_group_name"{
   type    = string
   default = "rds-sn-gp"

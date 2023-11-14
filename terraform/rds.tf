@@ -1,5 +1,5 @@
 # Crie uma instância do Amazon RDS MySQL
-resource "aws_db_instance" "default" {
+resource "aws_db_instance" "rds-sn-gp" {
   allocated_storage     = 10
   db_name               = "qtopdb"
   engine                = "mysql"
@@ -46,7 +46,7 @@ resource "aws_db_subnet_group" "rds-sn-gp" {
 
 resource "aws_security_group" "rds-sg" {
   name        = "rds-sg"
-  description = "Descrição do grupo de segurança para RDS"
+  description = "Descricao do grupo de seguranca para RDS"
   vpc_id      = aws_vpc.rds-vpc.id
 
   ingress {
@@ -67,7 +67,7 @@ resource "aws_security_group" "rds-sg" {
 
 
 output "rds_hostname" {
-  value = aws_db_instance.default.endpoint
+  value = aws_db_instance.rds-sn-gp.endpoint
 }
 
 # Crie um banco de dados e tabelas na instância RDS MySQL
