@@ -1,6 +1,6 @@
 # Crie uma instância do Amazon RDS MySQL
-resource "aws_db_instance" "rds-instance" {
-  allocated_storage        = 10
+resource "aws_db_instance" "rds-sbnt-grp" {
+  allocated_storage         = 10
   db_name                  = "qtopdb"
   engine                   = "mysql"
   engine_version           = "5.7"
@@ -12,7 +12,6 @@ resource "aws_db_instance" "rds-instance" {
   publicly_accessible      = false
   multi_az                 = false
   vpc_security_group_ids   = [aws_security_group.rds-sg.id]
-  aws_db_subnet_group_name = aws_db_subnet_group.rds-sbnt-grp.name
 }
 
 resource "aws_vpc" "default" {
