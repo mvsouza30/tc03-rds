@@ -69,7 +69,7 @@ resource "aws_security_group" "rds-sg" {
 
 
 output "rds_hostname" {
-  value = aws_db_instance.rds-instance.endpoint
+  value = aws_db_instance.rds-sbnt-grp.endpoint
 }
 
 # Crie um banco de dados e tabelas na instância RDS MySQL
