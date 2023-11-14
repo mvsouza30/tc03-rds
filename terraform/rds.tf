@@ -14,8 +14,8 @@ resource "aws_db_instance" "rds-sn-gp" {
   vpc_security_group_ids = [aws_security_group.rds-sg.id]
 }
 
-resource "aws_vpc" "rds-vpc" {
-  cidr_block = "172.31.0.0/16"
+resource "aws_vpc" "default" {
+  cidr_block = "172.31.0.0/20"
 }
 
 resource "aws_subnet" "subnet_az1" {
