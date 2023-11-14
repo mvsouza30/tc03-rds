@@ -46,7 +46,7 @@ resource "aws_db_subnet_group" "rds-sn-gp" {
 
 resource "aws_security_group" "rds-sg" {
   name        = "rds-sg"
-  description = "Descrição do grupo de segurança para RDS"
+  description = "Descricao do grupo de seguranca para RDS"
   vpc_id      = aws_vpc.rds-vpc.id
 
   ingress {
