@@ -11,7 +11,7 @@ resource "aws_db_instance" "default" {
   skip_final_snapshot   = true
   publicly_accessible   = false
   multi_az              = false
-  vpc_security_group_ids = aws_default_security_group.rds-sg
+  vpc_security_group_ids = aws_security_group.rds-sg
 }
 
 resource "aws_vpc" "rds-vpc" {
