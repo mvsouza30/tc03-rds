@@ -4,19 +4,15 @@ on:
   pull_request:
     branches:
       - main
-  push:
-    branches:
-      - main
 
 permissions:
   pull-requests: write
   issues: write
   repository-projects: write
 
-
 jobs:
   terraform:
-    name: Plan / Apply / SQL Script
+    name: SET UP RDS DATABASE
     runs-on: ubuntu-latest
     environment: prod
     defaults:
@@ -36,29 +32,16 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: "us-east-1"
 
-    - name: Use Terraform 1.6.2
+    - name: Terraform 1.6.2
       uses: hashicorp/setup-terraform@v2
       with:
         terraform_version: 1.6.2
 
-    - name: Terraform Init
-      id: init
-      run: terraform init
-      continue-on-error: false
-
-    - name: Terraform Validate
-      id: validate
-      run: terraform validate -no-color
-      continue-on-error: false
-
-    - name: Terraform Plan
-      id: plan
-      if: github.event_name == 'pull_request'
-      run: terraform plan -no-color -input=false
-      continue-on-error: false
-
-    - name: Terraform Apply
-      run: terraform apply -auto-approve
+    - name: Terraform Init / Apply
+      run: |
+        cd terraform 
+        terraform init
+        terraform apply -auto-approve
 
     - name: Capture RDS Hostname
       run: |
