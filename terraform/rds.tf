@@ -11,13 +11,14 @@ resource "aws_db_instance" "default" {
   skip_final_snapshot   = true
   publicly_accessible   = true
   multi_az              = false
-  vpc_security_group_ids = var.sg_id
+  vpc_security_group_ids = var.sg_ids
   depends_on = [aws_internet_gateway.igw]
 }
 
 resource "aws_db_subnet_group" "default" {
-  name       = "rds-sn-gp"
-  vpc_id = var.vpc_id
+  name        = "rds-sn-gp"
+  vpc_id      = var.vpc_id
+  subnet_ids  = var.subnet_ids
 
   tags = {
     subnet-name = "rds-subnet"
