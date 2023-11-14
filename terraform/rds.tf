@@ -7,6 +7,7 @@ resource "aws_db_instance" "rds-sbnt-grp" {
   instance_class           = "db.t2.micro"
   username                 = var.db_username
   password                 = var.db_password
+  db_subnet_group_name     = aws_db_subnet_group.rds-sbnt-grp.id
   parameter_group_name     = "default.mysql5.7"
   skip_final_snapshot      = true
   publicly_accessible      = false
@@ -22,7 +23,7 @@ resource "aws_subnet" "subnet_az1" {
   vpc_id            = aws_vpc.default.id
   cidr_block        = "172.31.1.0/24"
   availability_zone = var.availability_zone_01
-  map_public_ip_on_launch = false
+  map_public_ip_on_launch = true
 
   tags = {
     subnet_name = "rds-sn-gp-az1"
@@ -33,7 +34,7 @@ resource "aws_subnet" "subnet_az2" {
   vpc_id            = aws_vpc.default.id
   cidr_block        = "172.31.2.0/24" 
   availability_zone = var.availability_zone_02
-  map_public_ip_on_launch = false
+  map_public_ip_on_launch = true
   tags = {
     subnet_name = "rds-sn-gp-az2"
   }
