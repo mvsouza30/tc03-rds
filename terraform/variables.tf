@@ -31,6 +31,18 @@ variable "subnet_ids" {
   default = ["subnet-0b37269b5da4f9da5", "subnet-074f800ea4b46e6f2", "subnet-0c0a7dceac41e2bb6"]
 }
 
+variable "availability_zone_01" {
+  description = "Primeira zona de disponibilidade do RDS"
+  type        = string
+  default     = "us-east-1a"
+}
+
+variable "availability_zone_02" {
+  description = "Segunda zona de disponibilidade do RDS"
+  type        = string
+  default     = "us-east-1b"
+}
+
 #variable "sg_ids"{
   #type    = list(string)
   #default = "sg-06b061000fe76fbc4"
