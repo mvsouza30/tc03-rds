@@ -11,45 +11,52 @@ resource "aws_db_instance" "default" {
   skip_final_snapshot   = true
   publicly_accessible   = false
   multi_az              = false
-  vpc_security_group_ids = aws_default_security_group.id
-  depends_on = [aws_internet_gateway.igw]
+  vpc_security_group_ids = aws_default_security_group.rds-sg
 }
 
 resource "aws_vpc" "rds-vpc" {
   cidr_block = "172.31.0.0/16"
 }
 
-resource "aws_default_subnet" "default_az1" {
-  vpc_id            = var.vpc_id
+resource "aws_subnet" "subnet_az1" {
+  vpc_id            = aws_vpc.rds-vpc.id
+  cidr_block        = "172.31.1.0/24"
   availability_zone = var.availability_zone_01
 
+  # Marcando a subnet como privada, sem rota para a Internet
+  map_public_ip_on_launch = false
+
   tags = {
-    subnet_name = "rds-sn-gp"
+    Name = "rds-sn-gp-az1"
   }
 }
 
-resource "aws_default_subnet" "default_az2" {
-  vpc_id            = var.vpc_id
+resource "aws_subnet" "subnet_az2" {
+  vpc_id            = aws_vpc.rds-vpc.id
+  cidr_block        = "172.31.2.0/24"  # Substitua com a sua CIDR única
   availability_zone = var.availability_zone_02
 
   tags = {
-    subnet_name = "rds-sn-gp"
+    Name = "rds-sn-gp-az2"
   }
 }
 
 resource "aws_db_subnet_group" "rds-sn-gp" {
   name       = "rds-sn-gp"
-  subnet_ids = [aws_default_subnet.default_az1, aws_default_subnet.default_az2]
+  subnet_ids = [aws_subnet.subnet_az1, aws_subnet.subnet_az2]
 }
 
-resource "aws_default_security_group" "rds-sg" {
-  vpc_id = aws_vpc.rds-vpc.id
+resource "aws_security_group" "rds-sg" {
+  name        = "rds-sg"
+  description = "Descrição do grupo de segurança para RDS"
+  vpc_id      = aws_vpc.rds-vpc.id
 
   ingress {
-    protocol  = tcp
+    protocol  = "tcp"
     self      = true
     from_port = 3306
     to_port   = 3306
+    cidr_blocks = ["172.31.0.0/16"]
   }
 
   egress {
