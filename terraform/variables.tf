@@ -31,10 +31,10 @@ variable "subnet_ids" {
   default = ["subnet-0b37269b5da4f9da5", "subnet-074f800ea4b46e6f2", "subnet-0c0a7dceac41e2bb6"]
 }
 
-variable "sg_ids"{
-  type    = list(string)
-  default = "sg-06b061000fe76fbc4"
-}
+#variable "sg_ids"{
+  #type    = list(string)
+  #default = "sg-06b061000fe76fbc4"
+#}
 
 variable "subnet_group_name"{
   type    = string
