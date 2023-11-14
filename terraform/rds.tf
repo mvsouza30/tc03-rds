@@ -1,21 +1,22 @@
 # Crie uma instância do Amazon RDS MySQL
 resource "aws_db_instance" "default" {
-  allocated_storage    = 10
-  db_name              = "qtopdb"
-  engine               = "mysql"
-  engine_version       = "5.7"
-  instance_class       = "db.t2.micro"
-  username             = var.db_username
-  password             = var.db_password
-  parameter_group_name = "default.mysql5.7"
-  skip_final_snapshot  = true
-  publicly_accessible  = true
-  multi_az             = false
+  allocated_storage     = 10
+  db_name               = "qtopdb"
+  engine                = "mysql"
+  engine_version        = "5.7"
+  instance_class        = "db.t2.micro"
+  username              = var.db_username
+  password              = var.db_password
+  parameter_group_name  = "default.mysql5.7"
+  skip_final_snapshot   = true
+  publicly_accessible   = true
+  multi_az              = false
+  vpc_security_group_id = var.sg_id
 
-  vpc_security_group_ids = [aws_security_group.rds_sg.id]
-  db_subnet_group_name   = aws_db_subnet_group.my_db_subnet_group.id
+  db_subnet_group_name   = var.subnet_group_name
+  subnet_id              = var.subnet_id
 
-  depends_on = [aws_internet_gateway.gw]
+  depends_on = [aws_internet_gateway.igw]
 }
 
 output "rds_hostname" {
