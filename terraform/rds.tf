@@ -22,8 +22,6 @@ resource "aws_subnet" "subnet_az1" {
   vpc_id            = aws_vpc.rds-vpc.id
   cidr_block        = "172.31.1.0/24"
   availability_zone = var.availability_zone_01
-
-  # Marcando a subnet como privada, sem rota para a Internet
   map_public_ip_on_launch = false
 
   tags = {
@@ -35,7 +33,7 @@ resource "aws_subnet" "subnet_az2" {
   vpc_id            = aws_vpc.rds-vpc.id
   cidr_block        = "172.31.2.0/24"  # Substitua com a sua CIDR única
   availability_zone = var.availability_zone_02
-
+  map_public_ip_on_launch = false
   tags = {
     Name = "rds-sn-gp-az2"
   }
