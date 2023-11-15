@@ -55,7 +55,9 @@ jobs:
 
     - name: Run SQL Script
       run: |
-        mysql -h $RDS_HOSTNAME -P $RDS_PORT -U ${{ secrets.DB_USERNAME }} -p${{ secrets.DB_PASSWORD }} -D ${{ secrets.DB_NAME }} < script.sql
+        echo "RDS_HOSTNAME: $RDS_HOSTNAME"
+        echo "RDS_PORT: $RDS_PORT"
+        mysql -h $RDS_HOSTNAME -p $RDS_PORT -u ${{ secrets.DB_USERNAME }} -p${{ secrets.DB_PASSWORD }} -D ${{ secrets.DB_NAME }} < script.sql
       env:
         RDS_HOSTNAME: ${{ steps.rds.outputs.RDS_HOSTNAME }}
         RDS_PORT: ${{ steps.rds_port.outputs.RDS_PORT }}
