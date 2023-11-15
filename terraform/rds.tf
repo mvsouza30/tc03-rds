@@ -23,7 +23,7 @@ resource "aws_subnet" "subnet_az1" {
   vpc_id            = aws_vpc.default.id
   cidr_block        = "172.31.1.0/24"
   availability_zone = var.availability_zone_01
-  map_public_ip_on_launch = true
+  map_public_ip_on_launch = false
 
   tags = {
     subnet_name = "rds-sn-gp-az1"
@@ -34,7 +34,7 @@ resource "aws_subnet" "subnet_az2" {
   vpc_id            = aws_vpc.default.id
   cidr_block        = "172.31.2.0/24" 
   availability_zone = var.availability_zone_02
-  map_public_ip_on_launch = true
+  map_public_ip_on_launch = false
   tags = {
     subnet_name = "rds-sn-gp-az2"
   }
