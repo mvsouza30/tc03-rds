@@ -12,12 +12,14 @@ variable "db_username" {
   description = "User do banco de dados."
   type        = string
   default     = "mvsouza"
+  sensitive   = true
 }
 
 variable "db_password" {
   description = "Auth do banco de dados."
   type        = string
   default     = "MarcosTeste"
+  sensitive   = true
 }
 
 variable "availability_zone_01" {
