@@ -1,6 +1,6 @@
 # Crie uma instância do Amazon RDS MySQL
 resource "aws_db_instance" "rds-sbnt-grp" {
-  allocated_storage         = 10
+  allocated_storage        = 10
   db_name                  = "qtopdb"
   engine                   = "mysql"
   engine_version           = "5.7"
@@ -70,7 +70,9 @@ resource "aws_security_group" "rds-sg" {
 
 
 output "rds_hostname" {
-  value = aws_db_instance.rds-sbnt-grp.endpoint
+  description = "RDS instance hostname"
+  value       = aws_db_instance.rds-sbnt-grp.address
+  sensitive   = true
 }
 
 # Crie um banco de dados e tabelas na instância RDS MySQL
