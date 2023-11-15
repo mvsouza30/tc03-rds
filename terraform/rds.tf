@@ -45,8 +45,6 @@ resource "aws_db_subnet_group" "rds-sbnt-grp" {
   subnet_ids = [aws_subnet.subnet_az1.id, aws_subnet.subnet_az2.id]
 }
 
-
-
 resource "aws_security_group" "rds-sg" {
   name        = "rds-sg"
   description = "Descricao do grupo de seguranca para RDS"
@@ -69,16 +67,3 @@ resource "aws_security_group" "rds-sg" {
 }
 
 
-output "rds_hostname" {
-  description = "RDS instance hostname"
-  value       = aws_db_instance.rds-sbnt-grp.address
-  sensitive   = true
-}
-
-# Crie um banco de dados e tabelas na instância RDS MySQL
-#resource "null_resource" "create_database_and_tables" {
-  #depends_on = [aws_db_instance.default]
-  #provisioner "local-exec" {
-    #command = "mysql -h ${aws_db_instance.default.address} -u ${aws_db_instance.default.username} -p${aws_db_instance.default.password} < script.sql"
-     #}
-    #}
