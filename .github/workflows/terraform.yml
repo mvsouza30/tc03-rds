@@ -41,28 +41,5 @@ jobs:
       run: |
         terraform init
         terraform apply -auto-approve
-
-    - name: Capture RDS Hostname and Port
-      id: rds
-      run: |
-        RDS_HOSTNAME=$(terraform output -raw rds_hostname | awk -F. '{print $1}')
-        RDS_PORT=$(terraform output -raw rds_port)
-        echo "::set-secret name=RDS_HOSTNAME::${RDS_HOSTNAME}"
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_DEFAULT_REGION: us-east-1
-
-    - name: Run SQL Script
-      run: |
-        echo "RDS_HOSTNAME: $RDS_HOSTNAME"
-        echo "RDS_PORT: $RDS_PORT"
-        mysql -h $RDS_HOSTNAME -p $RDS_PORT -u ${{ secrets.DB_USERNAME }} -p${{ secrets.DB_PASSWORD }} -D ${{ secrets.DB_NAME }} < script.sql
-      env:
-        RDS_HOSTNAME: ${{ steps.rds.outputs.RDS_HOSTNAME }}
-        RDS_PORT: ${{ steps.rds_port.outputs.RDS_PORT }}
-        DB_USERNAME: ${{ secrets.DB_USERNAME }}
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        DB_NAME: ${{ secrets.DB_NAME }}
     
 
