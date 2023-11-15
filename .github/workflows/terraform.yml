@@ -45,8 +45,8 @@ jobs:
     - name: Capture RDS Hostname
       id: rds
       run: |
-        RDS_HOSTNAME=$(terraform output -raw rds_hostname)
-        echo "RDS_HOSTNAME=${RDS_HOSTNAME}" >> $GITHUB_ENV
+        RDS_HOSTNAME=$(terraform output -raw rds_hostname | awk -F. '{print $1}')
+        echo "::set-secret name=RDS_HOSTNAME::${RDS_HOSTNAME}"
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
