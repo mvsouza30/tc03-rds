@@ -69,14 +69,14 @@ resource "aws_route_table" "rt" {
   }
 
 # Rota para terceira sub-rede do ECS Fargate
-  route {
-    cidr_block = "172.31.3.0/24"
-    gateway_id = aws_internet_gateway.gw.id
-  }
+  #route {
+    #cidr_block = "172.31.3.0/24"
+    #gateway_id = aws_internet_gateway.gw.id
+  #}
 
 # Rota para minha rede
   route {
-    cidr_block = "191.5.227.137/32"
+    cidr_block = "191.5.227.87/32"
     gateway_id = aws_internet_gateway.gw.id
   }
 }
