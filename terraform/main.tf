@@ -96,3 +96,4 @@ resource "aws_route_table_association" "route3" {
   route_table_id = aws_route_table.rt.id
   subnet_id      = aws_subnet.sn3.id
 }
+

@@ -15,5 +15,3 @@ resource "aws_db_instance" "rds-sbnt-grp" {
   vpc_security_group_ids   = [aws_security_group.rds-sg.id]
 }
 
-
-
