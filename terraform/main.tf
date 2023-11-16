@@ -81,19 +81,9 @@ resource "aws_route_table" "rt" {
   }
 }
 
-# Associações de rotas às subnets
+# Associação do Internet Gateway apontando para subnets do ECS Fargate
 resource "aws_route_table_association" "route1" {
   route_table_id = aws_route_table.rt.id
-  subnet_id      = aws_subnet.sn1.id
-}
-
-resource "aws_route_table_association" "route2" {
-  route_table_id = aws_route_table.rt.id
-  subnet_id      = aws_subnet.sn2.id
-}
-
-resource "aws_route_table_association" "route3" {
-  route_table_id = aws_route_table.rt.id
-  subnet_id      = aws_subnet.sn3.id
+  gateway_id     = aws_internet_gateway.gw.id
 }
 
