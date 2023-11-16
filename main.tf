@@ -24,7 +24,7 @@ resource "aws_subnet" "subnet_az2" {
 }
 
 resource "aws_db_subnet_group" "rds-sbnt-grp" {
-  name       = "rds-sn-gp"
+  name       = "rds-sbnt-grp"
   subnet_ids = [aws_subnet.subnet_az1.id, aws_subnet.subnet_az2.id]
 }
 
