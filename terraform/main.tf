@@ -56,23 +56,29 @@ resource "aws_internet_gateway" "gw" {
 resource "aws_route_table" "rt" {
   vpc_id = aws_vpc.default.id
 
+# Rota para vpc do ECS Fargate
+  route {
+    cidr_block = "10.0.0.0/16"
+    gateway_id = aws_internet_gateway.gw.id
+  }
+
 # Rota para primeira sub-rede do ECS Fargate
   route {
-    cidr_block = "172.31.1.0/24"
+    cidr_block = "10.0.1.0/16"
     gateway_id = aws_internet_gateway.gw.id
   }
 
 # Rota para segunda sub-rede do ECS Fargate
   route {
-    cidr_block = "172.31.2.0/24"
+    cidr_block = "10.0.2.0/24"
     gateway_id = aws_internet_gateway.gw.id
   }
 
 # Rota para terceira sub-rede do ECS Fargate
-  #route {
-    #cidr_block = "172.31.3.0/24"
-    #gateway_id = aws_internet_gateway.gw.id
-  #}
+  route {
+    cidr_block = "10.0.3.0/24"
+    gateway_id = aws_internet_gateway.gw.id
+  }
 
 # Rota para minha rede
   route {
