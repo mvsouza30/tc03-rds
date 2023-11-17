@@ -4,7 +4,7 @@ resource "aws_vpc" "default" {
 
 resource "aws_subnet" "subnet_az1" {
   vpc_id            = aws_vpc.default.id
-  cidr_block        = "172.31.5.0/24"
+  cidr_block        = "172.31.1.0/24"
   availability_zone = var.availability_zone_01
   map_public_ip_on_launch = false
 
@@ -15,7 +15,7 @@ resource "aws_subnet" "subnet_az1" {
 
 resource "aws_subnet" "subnet_az2" {
   vpc_id            = aws_vpc.default.id
-  cidr_block        = "172.31.6.0/24" 
+  cidr_block        = "172.31.2.0/24" 
   availability_zone = var.availability_zone_02
   map_public_ip_on_launch = false
   tags = {
@@ -38,7 +38,15 @@ resource "aws_security_group" "rds-sg" {
     self      = true
     from_port = 3306
     to_port   = 3306
-    cidr_blocks = ["172.31.0.0/16"]
+    cidr_blocks = ["172.31.3.0/16"]
+  }
+
+  ingress {
+    protocol  = "tcp"
+    self      = true
+    from_port = 3306
+    to_port   = 3306
+    cidr_blocks = ["191.5.227.87/32"]
   }
 
   egress {
@@ -58,32 +66,30 @@ resource "aws_route_table" "rt" {
 
 # Rota para vpc do ECS Fargate
   route {
-    cidr_block = "10.0.0.0/16"
-    gateway_id = aws_internet_gateway.gw.id
+    cidr_block = "172.31.3.0/16"
+    subnet_id  = aws_subnet.subnet_az1.id
   }
 
 # Rota para primeira sub-rede do ECS Fargate
   route {
-    cidr_block = "110.0.32.0/24"
-    gateway_id = aws_internet_gateway.gw.id
+    cidr_block = "172.31.4.0/24"
+    subnet_id  = aws_subnet.subnet_az2.id
   }
 
-# Rota para segunda sub-rede do ECS Fargate
   route {
-    cidr_block = "10.0.64.0/24"
-    gateway_id = aws_internet_gateway.gw.id
+    cidr_block = "172.31.5.0/24"
+    subnet_id  = aws_subnet.subnet_az2.id
   }
 
-# Rota para terceira sub-rede do ECS Fargate
   route {
-    cidr_block = "10.0.128.0/24"
-    gateway_id = aws_internet_gateway.gw.id
+    cidr_block = "172.31.6.0/24"
+    subnet_id  = aws_subnet.subnet_az2.id
   }
 
 # Rota para minha rede
   route {
     cidr_block = "191.5.227.87/32"
-    gateway_id = aws_internet_gateway.gw.id
+    subnet_id  = aws_subnet.subnet_az1.id
   }
 }
 
