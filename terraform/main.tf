@@ -1,5 +1,5 @@
 resource "aws_vpc" "default" {
-  cidr_block = "172.31.0.0/16"
+  cidr_block = "172.31.0.0/20"
 }
 
 resource "aws_subnet" "subnet_az1" {
@@ -38,7 +38,7 @@ resource "aws_security_group" "rds-sg" {
     self      = true
     from_port = 3306
     to_port   = 3306
-    cidr_blocks = ["172.31.0.0/20"]
+    cidr_blocks = ["172.31.0.0/16"]
   }
 
   ingress {
@@ -66,7 +66,7 @@ resource "aws_route_table" "rt" {
 
 # Rota para vpc do ECS Fargate
   route {
-    cidr_block = "172.31.0.0/20"
+    cidr_block = "172.31.0.0/16"
     gateway_id  = aws_internet_gateway.gw.id
   }
 
