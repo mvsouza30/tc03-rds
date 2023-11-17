@@ -38,7 +38,7 @@ resource "aws_security_group" "rds-sg" {
     self      = true
     from_port = 3306
     to_port   = 3306
-    cidr_blocks = ["172.31.3.0/16"]
+    cidr_blocks = ["172.31.0.0/26"]
   }
 
   ingress {
@@ -66,30 +66,30 @@ resource "aws_route_table" "rt" {
 
 # Rota para vpc do ECS Fargate
   route {
-    cidr_block = "172.31.3.0/16"
-    subnet_id  = aws_subnet.subnet_az1.id
+    cidr_block = "172.31.0.0/26"
+    gateway_id  = aws_internet_gateway.gw.id
   }
 
 # Rota para primeira sub-rede do ECS Fargate
-  route {
-    cidr_block = "172.31.4.0/24"
-    subnet_id  = aws_subnet.subnet_az2.id
-  }
+  #route {
+    #cidr_block = "172.31.4.0/24"
+    #subnet_id  = aws_subnet.subnet_az2.id
+  #}
 
-  route {
-    cidr_block = "172.31.5.0/24"
-    subnet_id  = aws_subnet.subnet_az2.id
-  }
+  #route {
+    #cidr_block = "172.31.5.0/24"
+    #subnet_id  = aws_subnet.subnet_az2.id
+  #}
 
-  route {
-    cidr_block = "172.31.6.0/24"
-    subnet_id  = aws_subnet.subnet_az2.id
-  }
+  #route {
+    #cidr_block = "172.31.6.0/24"
+    #subnet_id  = aws_subnet.subnet_az2.id
+  #}
 
 # Rota para minha rede
   route {
     cidr_block = "191.5.227.87/32"
-    subnet_id  = aws_subnet.subnet_az1.id
+    gateway_id = aws_internet_gateway.gw.id
   }
 }
 
