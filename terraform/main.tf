@@ -66,7 +66,7 @@ resource "aws_route_table" "rt" {
   route {
     cidr_block = "110.0.32.0/24"
     gateway_id = aws_internet_gateway.gw.id
-
+  }
 
 # Rota para segunda sub-rede do ECS Fargate
   route {
