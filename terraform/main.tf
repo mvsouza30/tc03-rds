@@ -38,7 +38,7 @@ resource "aws_security_group" "rds-sg" {
     self      = true
     from_port = 3306
     to_port   = 3306
-    cidr_blocks = ["172.31.0.0/26"]
+    cidr_blocks = ["172.31.0.0/20"]
   }
 
   ingress {
@@ -66,7 +66,7 @@ resource "aws_route_table" "rt" {
 
 # Rota para vpc do ECS Fargate
   route {
-    cidr_block = "172.31.0.0/26"
+    cidr_block = "172.31.0.0/20"
     gateway_id  = aws_internet_gateway.gw.id
   }
 
